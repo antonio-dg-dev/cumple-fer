@@ -22,6 +22,9 @@
 
 * { box-sizing: border-box; }
 
+/* hidden siempre gana, aunque la clase defina display */
+[hidden] { display: none !important; }
+
 html { background: var(--noche); overflow-x: clip; }
 
 body {
