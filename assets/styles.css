@@ -11,6 +11,7 @@
   --verde: #3ee6a0;
   --azul: #4cb3ff;
   --rojo: #ff4d6d;
+  --rosa: #ff4fb8;
   --negro: #050308;
 
   --f-neon: "Monoton", "Impact", sans-serif;
@@ -82,11 +83,11 @@ body {
 .nombre {
   margin: 0;
   font: 400 clamp(4.5rem, 24vw, 8rem)/0.95 var(--f-neon);
-  color: #ffd9c0;
+  color: #ffd6ef;
   text-shadow:
-    0 0 4px rgba(255, 138, 61, 0.9),
-    0 0 18px rgba(255, 138, 61, 0.6),
-    0 0 42px rgba(255, 77, 109, 0.35);
+    0 0 4px rgba(255, 79, 184, 0.95),
+    0 0 18px rgba(255, 79, 184, 0.65),
+    0 0 42px rgba(255, 79, 184, 0.35);
   animation: encender 1.6s ease-out 0.2s both;
 }
 
