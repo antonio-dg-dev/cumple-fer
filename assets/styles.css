@@ -14,7 +14,6 @@
   --rosa: #ff4fb8;
   --negro: #050308;
 
-  --f-neon: "Monoton", "Impact", sans-serif;
   --f-titulo: "Bungee", "Arial Black", sans-serif;
   --f-texto: "Manrope", "Helvetica Neue", Arial, sans-serif;
   --f-mono: "Space Mono", ui-monospace, Menlo, monospace;
@@ -122,7 +121,7 @@ body {
 
 .nombre {
   margin: 0;
-  font: 400 clamp(4.5rem, 24vw, 8rem)/0.95 var(--f-neon);
+  font: 400 clamp(4.5rem, 24vw, 7.5rem)/0.95 var(--f-titulo);
   color: #ffd6ef;
   text-shadow:
     0 0 4px rgba(255, 79, 184, 0.95),
