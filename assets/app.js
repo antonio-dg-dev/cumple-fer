@@ -11,8 +11,19 @@
   const estado = document.getElementById('estado');
   const acciones = document.getElementById('acciones');
 
+  // Crece desde cero empujando el contenido mientras aparece
   function mostrarSaludo() {
-    document.documentElement.classList.add('listo');
+    const raiz = document.documentElement;
+    if (raiz.classList.contains('listo')) return;
+    raiz.classList.add('listo');
+    if (!raiz.classList.contains('con-link') || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    [saludo, pie].forEach(function (el) {
+      const alto = el.offsetHeight;
+      el.animate([
+        { height: '0px', opacity: 0, transform: 'translateY(-10px)', overflow: 'hidden' },
+        { height: alto + 'px', opacity: 1, transform: 'none', overflow: 'hidden' }
+      ], { duration: 700, easing: 'cubic-bezier(0.22, 0.8, 0.3, 1)' });
+    });
   }
 
   if (!token || !url) return mostrarSaludo();

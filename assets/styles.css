@@ -476,8 +476,11 @@ textarea:focus { outline: none; border-color: var(--naranja); box-shadow: 0 0 10
 }
 .acciones.varias .boton { min-height: 3.75rem; font-size: 0.95rem; }
 
-/* Con link personal, saludo y despedida aparecen ya personalizados */
-.con-link .saludo,
-.con-link .pie { opacity: 0; transition: opacity 0.5s ease; }
-.con-link.listo .saludo,
-.con-link.listo .pie { opacity: 1; }
+/* Con link personal, saludo y despedida no ocupan espacio hasta tener el nombre real;
+   app.js los hace crecer y aparecer empujando el contenido */
+.con-link:not(.listo) .saludo,
+.con-link:not(.listo) .pie {
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+}
