@@ -10,6 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Manrope:wght@400;600;700&family=Monoton&family=Space+Mono:wght@400;700&display=swap">
   <link rel="stylesheet" href="assets/styles.css">
+  <script>
+    // Con link personal, el saludo espera escondido hasta tener el nombre real
+    if (new URLSearchParams(location.search).get("i")) document.documentElement.classList.add("con-link");
+  </script>
 </head>
 <body>
   <main class="pagina">

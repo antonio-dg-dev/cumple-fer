@@ -11,7 +11,11 @@
   const estado = document.getElementById('estado');
   const acciones = document.getElementById('acciones');
 
-  if (!token || !url) return;
+  function mostrarSaludo() {
+    document.documentElement.classList.add('listo');
+  }
+
+  if (!token || !url) return mostrarSaludo();
 
   // Terminación según género: una persona (a/o) o varias (as solo si todas son mujeres)
   function sufijo(personas) {
@@ -145,5 +149,6 @@
     .catch(function () {
       sinLink.textContent = 'No pude cargar tu invitación. Revisa tu conexión y recarga la página.';
       sinLink.hidden = false;
-    });
+    })
+    .finally(mostrarSaludo);
 })();
