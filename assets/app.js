@@ -71,7 +71,7 @@
     const plural = personas.length > 1;
     if (!van.length) {
       return alGuardar
-        ? 'Gracias por avisar. ' + (plural ? 'Los' : 'Te') + ' vamos a extrañar.'
+        ? 'Gracias por avisar.'
         : (plural ? 'Su respuesta: no pueden ir. Pueden cambiarla cuando quieran.' : 'Tu respuesta: no podrás ir. Puedes cambiarla cuando quieras.');
     }
     const quien = van.length === 1 ? van[0] : null;
@@ -79,7 +79,7 @@
     if (!plural) texto = alGuardar ? '¡Listo! Quedaste confirmad' + sufijo(van) + '.' : 'Tu respuesta: ahí estarás.';
     else if (van.length === personas.length) texto = alGuardar ? '¡Listo! Quedaron confirmad' + sufijo(van) + '.' : 'Su respuesta: van ' + (van.length === 2 ? 'los dos' : 'todos') + '.';
     else texto = alGuardar ? '¡Listo! ' + unirNombres(van.map(function (p) { return p.nombre; })) + (quien ? ' quedó confirmad' + sufijo(van) : ' quedaron confirmad' + sufijo(van)) + '.' : 'Su respuesta: solo va ' + unirNombres(van.map(function (p) { return p.nombre; })) + '.';
-    if (alGuardar) return texto + ' Nos vemos el sábado.';
+    if (alGuardar) return texto;
     return texto + (plural ? ' Pueden cambiarla cuando quieran.' : ' Puedes cambiarla cuando quieras.');
   }
 
@@ -145,6 +145,17 @@
     toastTimer = setTimeout(function () { toast.classList.remove('visible'); }, 3800);
   }
 
+  // Frase del aviso según quién va
+  function despedida(personas, respuestas) {
+    const van = personas.filter(function (p) { return respuestas[p.nombre] === 'si'; });
+    const noVan = personas.filter(function (p) { return respuestas[p.nombre] !== 'si'; });
+    if (personas.length === 1) return van.length ? '¡Nos vemos el sábado!' : 'Qué mal, te vamos a extrañar.';
+    if (!van.length) return 'Qué mal, ' + (sufijo(personas) === 'as' ? 'las' : 'los') + ' vamos a extrañar.';
+    if (!noVan.length) return '¡' + (sufijo(personas) === 'as' ? 'Las' : 'Los') + ' espero a ' + (personas.length === 2 ? (sufijo(personas) === 'as' ? 'las dos' : 'los dos') : 'todos') + ' el sábado!';
+    return '¡Nos vemos el sábado, ' + unirNombres(van.map(function (p) { return p.nombre; })) + '! ' +
+      unirNombres(noVan.map(function (p) { return p.nombre; })) + ', te vamos a extrañar.';
+  }
+
   function guardar(personas, op) {
     const respuestas = op.respuestas;
     bloquear(true);
@@ -162,7 +173,7 @@
         mostrarEstado(mensaje(data.personas, respuestas, true));
         const elegido = acciones.querySelector('[aria-pressed="true"]');
         if (elegido) elegido.classList.add('confirmado');
-        avisar('¡Respuesta guardada!', (personas.length > 1 ? 'Su respuesta: ' : 'Tu respuesta: ') + op.texto, op.color, '✓');
+        avisar('¡Respuesta guardada!', despedida(personas, respuestas), op.color, '✓');
       })
       .catch(function () {
         mostrarEstado('No se guardó la respuesta. Revisa tu conexión e inténtalo otra vez.', true);
