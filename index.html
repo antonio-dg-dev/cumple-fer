@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Cumple de Fer</title>
+  <meta name="description" content="Fer te invita a su cumple: sábado 14 de noviembre en Casa Nogal.">
+  <meta name="theme-color" content="#100c1a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Manrope:wght@400;600;700&family=Monoton&family=Space+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <main class="pagina">
+    <header class="marquesina">
+      <p class="saludo" id="saludo">Estás invitad@ al cumple de</p>
+      <h1 class="nombre">Fer</h1>
+      <p class="subtitulo">Una noche ochentera y nada de mentiras</p>
+    </header>
+
+    <section class="seccion" aria-labelledby="t-cuando">
+      <p class="etiqueta">Cuándo</p>
+      <div class="fecha">
+        <span class="dia" aria-hidden="true">14</span>
+        <h2 class="linea1" id="t-cuando">Sábado 14 de noviembre</h2>
+        <span class="linea2">Llegada a las <strong>4:00 pm</strong></span>
+      </div>
+      <p>Mi cumple es el 12, pero lo festejamos el sábado.</p>
+    </section>
+
+    <section class="seccion" aria-labelledby="t-donde">
+      <p class="etiqueta">Dónde</p>
+      <h2 id="t-donde">Casa Nogal</h2>
+      <p>Primera Cda. de la Nogal 13, Sta. María la Ribera, Cuauhtémoc, 06400, CDMX</p>
+      <iframe
+        class="mapa"
+        title="Mapa de Casa Nogal"
+        src="https://maps.google.com/maps?q=Casa%20Nogal%2C%20Primera%20Cda.%20de%20la%20Nogal%2013%2C%20Santa%20Mar%C3%ADa%20la%20Ribera%2C%2006400%20Ciudad%20de%20M%C3%A9xico&z=16&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <a class="boton-secundario" href="https://maps.app.goo.gl/vDwcQzzRSwY7TRJ56" target="_blank" rel="noopener">Abrir en Google Maps ↗</a>
+    </section>
+
+    <section class="seccion" aria-labelledby="t-vestimenta">
+      <p class="etiqueta">Código de vestimenta</p>
+      <h2 id="t-vestimenta">Ochentero, inspirado en <em>Mentiras</em></h2>
+      <p>Saca lo más ochentero de tu clóset en alguno de estos colores:</p>
+      <ul class="colores">
+        <li><span style="--c: var(--naranja)"></span>Naranja</li>
+        <li><span style="--c: var(--verde)"></span>Verde</li>
+        <li><span style="--c: var(--azul)"></span>Azul</li>
+        <li><span style="--c: var(--rojo)"></span>Rojo</li>
+        <li><span style="--c: var(--negro)"></span>Negro</li>
+      </ul>
+    </section>
+
+    <section class="seccion" aria-labelledby="t-plan">
+      <p class="etiqueta">Qué habrá</p>
+      <h2 id="t-plan">Trae ganas de cantar</h2>
+      <ul class="plan">
+        <li>Comida</li>
+        <li>Juegos de mesa</li>
+        <li>Karaoke</li>
+        <li>Mucha diversión</li>
+      </ul>
+    </section>
+
+    <section class="seccion rsvp" id="rsvp" aria-labelledby="t-rsvp" hidden>
+      <p class="etiqueta">Confirma</p>
+      <h2 id="t-rsvp">¿Vienes? Dime la verdad</h2>
+      <p class="limite">Confirma a más tardar el martes 10 de noviembre.</p>
+      <div class="campo">
+        <label for="notas">Notas (opcional)</label>
+        <textarea id="notas" maxlength="300" placeholder="Ej. llego tarde, soy vegetariana…"></textarea>
+      </div>
+      <div class="acciones">
+        <button class="boton" type="button" id="btn-si" data-respuesta="si" aria-pressed="false">Ahí estaré</button>
+        <button class="boton no" type="button" id="btn-no" data-respuesta="no" aria-pressed="false">No podré ir</button>
+      </div>
+      <p class="estado" id="estado" role="status" aria-live="polite"></p>
+    </section>
+
+    <p class="seccion estado" id="sin-link" hidden>Para confirmar, abre el link personal que te mandé.</p>
+
+    <footer class="pie">Te espero · Fer</footer>
+  </main>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
