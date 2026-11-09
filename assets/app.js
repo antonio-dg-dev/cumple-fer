@@ -117,7 +117,7 @@
       b.style.setProperty('--c', op.color);
       b.textContent = op.texto;
       b.setAttribute('aria-pressed', String(iguales(op.respuestas, actuales)));
-      b.addEventListener('click', function () { guardar(personas, op.respuestas); });
+      b.addEventListener('click', function () { guardar(personas, op); });
       acciones.append(b);
     });
 
@@ -129,7 +129,24 @@
     acciones.querySelectorAll('button').forEach(function (b) { b.disabled = si; });
   }
 
-  function guardar(personas, respuestas) {
+  const toast = document.getElementById('toast');
+  let toastTimer;
+
+  // Aviso de neón que sube desde abajo y se va solo
+  function avisar(titulo, detalle, color, icono) {
+    document.getElementById('toast-titulo').textContent = titulo;
+    document.getElementById('toast-detalle').textContent = detalle;
+    document.getElementById('toast-icono').textContent = icono;
+    toast.style.setProperty('--c', color);
+    toast.classList.remove('visible');
+    void toast.offsetWidth;
+    toast.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove('visible'); }, 3800);
+  }
+
+  function guardar(personas, op) {
+    const respuestas = op.respuestas;
     bloquear(true);
     mostrarEstado('Guardando…');
     // text/plain evita el preflight CORS que Apps Script no responde
@@ -143,9 +160,13 @@
         if (!data.ok) throw new Error(data.error);
         personalizar(data);
         mostrarEstado(mensaje(data.personas, respuestas, true));
+        const elegido = acciones.querySelector('[aria-pressed="true"]');
+        if (elegido) elegido.classList.add('confirmado');
+        avisar('¡Respuesta guardada!', (personas.length > 1 ? 'Su respuesta: ' : 'Tu respuesta: ') + op.texto, op.color, '✓');
       })
       .catch(function () {
         mostrarEstado('No se guardó la respuesta. Revisa tu conexión e inténtalo otra vez.', true);
+        avisar('No se guardó', 'Revisa tu conexión e inténtalo otra vez.', 'var(--rojo)', '!');
       })
       .finally(function () { bloquear(false); });
   }

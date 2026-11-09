@@ -6,12 +6,12 @@
   <title>Cumple de Fer</title>
   <meta name="description" content="Fer te invita a su cumple: sábado 14 de noviembre en Casa Nogal.">
   <meta name="theme-color" content="#100c1a">
-  <link rel="icon" type="image/png" href="assets/icono.png?v=10">
-  <link rel="apple-touch-icon" href="assets/icono-180.png?v=10">
+  <link rel="icon" type="image/png" href="assets/icono.png?v=11">
+  <link rel="apple-touch-icon" href="assets/icono-180.png?v=11">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Manrope:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap">
-  <link rel="stylesheet" href="assets/styles.css?v=10">
+  <link rel="stylesheet" href="assets/styles.css?v=11">
   <script>
     // Con link personal, el saludo espera escondido hasta tener el nombre real
     if (new URLSearchParams(location.search).get("i")) document.documentElement.classList.add("con-link");
@@ -92,7 +92,15 @@
     <footer class="pie" id="pie">Te espero · Fer</footer>
   </main>
 
-  <script src="assets/config.js?v=10"></script>
-  <script src="assets/app.js?v=10"></script>
+  <div class="toast" id="toast" aria-hidden="true">
+    <span class="toast-icono" id="toast-icono">✓</span>
+    <span class="toast-texto">
+      <strong id="toast-titulo"></strong>
+      <span id="toast-detalle"></span>
+    </span>
+  </div>
+
+  <script src="assets/config.js?v=11"></script>
+  <script src="assets/app.js?v=11"></script>
 </body>
 </html>
