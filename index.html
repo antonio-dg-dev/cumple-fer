@@ -72,21 +72,18 @@
     <section class="seccion rsvp" id="rsvp" aria-labelledby="t-rsvp" hidden>
       <p class="etiqueta">Confirma</p>
       <h2 id="t-rsvp">¿Vienes?</h2>
-      <p class="limite">Confirma a más tardar el martes 10 de noviembre.</p>
+      <p class="limite">Fecha límite para confirmar: martes 10 de noviembre.</p>
       <div class="campo">
         <label for="notas">Notas (opcional)</label>
         <textarea id="notas" maxlength="300" placeholder="Ej. Llego a las 5:00 pm"></textarea>
       </div>
-      <div class="acciones">
-        <button class="boton" type="button" id="btn-si" data-respuesta="si" aria-pressed="false">Ahí estaré</button>
-        <button class="boton no" type="button" id="btn-no" data-respuesta="no" aria-pressed="false">No podré ir</button>
-      </div>
+      <div class="acciones" id="acciones"></div>
       <p class="estado" id="estado" role="status" aria-live="polite"></p>
     </section>
 
     <p class="seccion estado" id="sin-link" hidden></p>
 
-    <footer class="pie">Te espero · Fer</footer>
+    <footer class="pie" id="pie">Te espero · Fer</footer>
   </main>
 
   <script src="assets/config.js"></script>

@@ -29,7 +29,7 @@
       const li = document.createElement('li');
       const quien = document.createElement('span');
       quien.className = 'quien';
-      quien.textContent = inv.nombre;
+      quien.textContent = inv.nombre + (inv.con && inv.con.length ? ' (con ' + inv.con.join(', ') + ')' : '');
       const cuando = document.createElement('span');
       cuando.className = 'cuando';
       cuando.textContent = inv.actualizado ? fecha.format(new Date(inv.actualizado)) : '';

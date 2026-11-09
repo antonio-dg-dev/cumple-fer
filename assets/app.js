@@ -5,30 +5,131 @@
   const rsvp = document.getElementById('rsvp');
   const sinLink = document.getElementById('sin-link');
   const saludo = document.getElementById('saludo');
+  const tituloRsvp = document.getElementById('t-rsvp');
+  const pie = document.getElementById('pie');
   const notas = document.getElementById('notas');
   const estado = document.getElementById('estado');
-  const botones = rsvp.querySelectorAll('button[data-respuesta]');
-
-  const TEXTOS = {
-    si: '¡Listo! Quedaste confirmad@. Nos vemos el sábado.',
-    no: 'Gracias por avisar. Te vamos a extrañar.'
-  };
+  const acciones = document.getElementById('acciones');
 
   if (!token || !url) return;
+
+  // Terminación según género: una persona (a/o) o varias (as solo si todas son mujeres)
+  function sufijo(personas) {
+    const todasM = personas.every(function (p) { return p.genero === 'M'; });
+    if (personas.length === 1) return todasM ? 'a' : 'o';
+    return todasM ? 'as' : 'os';
+  }
+
+  function unirNombres(nombres) {
+    return nombres.length < 2 ? nombres.join('') : nombres.slice(0, -1).join(', ') + ' y ' + nombres[nombres.length - 1];
+  }
+
+  // Cada opción dice qué responde cada persona del link
+  function opciones(personas) {
+    const todos = function (r) {
+      const o = {};
+      personas.forEach(function (p) { o[p.nombre] = r; });
+      return o;
+    };
+    if (personas.length === 1) {
+      return [
+        { texto: 'Ahí estaré', color: 'var(--verde)', respuestas: todos('si') },
+        { texto: 'No podré ir', color: 'var(--rojo)', respuestas: todos('no') }
+      ];
+    }
+    const lista = [{ texto: personas.length === 2 ? 'Vamos los dos' : 'Vamos todos', color: 'var(--verde)', respuestas: todos('si') }];
+    const colores = ['var(--rosa)', 'var(--azul)', 'var(--naranja)'];
+    personas.forEach(function (p, i) {
+      const r = todos('no');
+      r[p.nombre] = 'si';
+      lista.push({ texto: 'Solo ' + p.nombre, color: colores[i % colores.length], respuestas: r });
+    });
+    lista.push({ texto: 'No podemos ir', color: 'var(--rojo)', respuestas: todos('no') });
+    return lista;
+  }
+
+  function mensaje(personas, respuestas, alGuardar) {
+    const van = personas.filter(function (p) { return respuestas[p.nombre] === 'si'; });
+    const plural = personas.length > 1;
+    if (!van.length) {
+      return alGuardar
+        ? 'Gracias por avisar. ' + (plural ? 'Los' : 'Te') + ' vamos a extrañar.'
+        : (plural ? 'Su respuesta: no pueden ir. Pueden cambiarla cuando quieran.' : 'Tu respuesta: no podrás ir. Puedes cambiarla cuando quieras.');
+    }
+    const quien = van.length === 1 ? van[0] : null;
+    let texto;
+    if (!plural) texto = alGuardar ? '¡Listo! Quedaste confirmad' + sufijo(van) + '.' : 'Tu respuesta: ahí estarás.';
+    else if (van.length === personas.length) texto = alGuardar ? '¡Listo! Quedaron confirmad' + sufijo(van) + '.' : 'Su respuesta: van ' + (van.length === 2 ? 'los dos' : 'todos') + '.';
+    else texto = alGuardar ? '¡Listo! ' + unirNombres(van.map(function (p) { return p.nombre; })) + (quien ? ' quedó confirmad' + sufijo(van) : ' quedaron confirmad' + sufijo(van)) + '.' : 'Su respuesta: solo va ' + unirNombres(van.map(function (p) { return p.nombre; })) + '.';
+    if (alGuardar) return texto + ' Nos vemos el sábado.';
+    return texto + (plural ? ' Pueden cambiarla cuando quieran.' : ' Puedes cambiarla cuando quieras.');
+  }
 
   function mostrarEstado(texto, esError) {
     estado.textContent = texto;
     estado.classList.toggle('error', !!esError);
   }
 
-  function marcar(respuesta) {
-    botones.forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b.dataset.respuesta === respuesta));
+  function iguales(a, b) {
+    return Object.keys(a).every(function (k) { return a[k] === b[k]; });
+  }
+
+  function personalizar(data) {
+    const personas = data.personas;
+    const plural = personas.length > 1;
+    const suf = sufijo(personas);
+
+    saludo.textContent = '¡Hola, ' + unirNombres(personas.map(function (p) { return p.nombre; })) + '! ' +
+      (plural ? 'Están' : 'Estás') + ' invitad' + suf + ' al cumple de';
+    tituloRsvp.textContent = plural ? '¿Vienen?' : '¿Vienes?';
+    notas.placeholder = plural ? 'Ej. Llegamos a las 5:00 pm' : 'Ej. Llego a las 5:00 pm';
+    pie.textContent = (plural ? (suf === 'as' ? 'Las' : 'Los') : 'Te') + ' espero · Fer';
+    notas.value = data.notas || '';
+
+    const actuales = {};
+    personas.forEach(function (p) { actuales[p.nombre] = p.respuesta; });
+
+    const lista = opciones(personas);
+    acciones.classList.toggle('varias', lista.length > 2);
+    acciones.replaceChildren();
+    lista.forEach(function (op) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'boton';
+      b.style.setProperty('--c', op.color);
+      b.textContent = op.texto;
+      b.setAttribute('aria-pressed', String(iguales(op.respuestas, actuales)));
+      b.addEventListener('click', function () { guardar(personas, op.respuestas); });
+      acciones.append(b);
     });
+
+    rsvp.hidden = false;
+    if (personas.some(function (p) { return p.respuesta; })) mostrarEstado(mensaje(personas, actuales, false));
   }
 
   function bloquear(si) {
-    botones.forEach(function (b) { b.disabled = si; });
+    acciones.querySelectorAll('button').forEach(function (b) { b.disabled = si; });
+  }
+
+  function guardar(personas, respuestas) {
+    bloquear(true);
+    mostrarEstado('Guardando…');
+    // text/plain evita el preflight CORS que Apps Script no responde
+    fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ token: token, respuestas: respuestas, notas: notas.value })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data.ok) throw new Error(data.error);
+        personalizar(data);
+        mostrarEstado(mensaje(data.personas, respuestas, true));
+      })
+      .catch(function () {
+        mostrarEstado('No se guardó la respuesta. Revisa tu conexión e inténtalo otra vez.', true);
+      })
+      .finally(function () { bloquear(false); });
   }
 
   fetch(url + '?action=get&token=' + encodeURIComponent(token))
@@ -39,40 +140,10 @@
         sinLink.hidden = false;
         return;
       }
-      saludo.textContent = '¡Hola, ' + data.nombre + '! Estás invitad@ al cumple de';
-      notas.value = data.notas || '';
-      rsvp.hidden = false;
-      if (data.respuesta) {
-        marcar(data.respuesta);
-        mostrarEstado('Tu respuesta: ' + (data.respuesta === 'si' ? 'ahí estarás.' : 'no podrás ir.') + ' Puedes cambiarla cuando quieras.');
-      }
+      personalizar(data);
     })
     .catch(function () {
       sinLink.textContent = 'No pude cargar tu invitación. Revisa tu conexión y recarga la página.';
       sinLink.hidden = false;
     });
-
-  botones.forEach(function (boton) {
-    boton.addEventListener('click', function () {
-      const respuesta = boton.dataset.respuesta;
-      bloquear(true);
-      mostrarEstado('Guardando…');
-      // text/plain evita el preflight CORS que Apps Script no responde
-      fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ token: token, respuesta: respuesta, notas: notas.value })
-      })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-          if (!data.ok) throw new Error(data.error);
-          marcar(respuesta);
-          mostrarEstado(TEXTOS[respuesta]);
-        })
-        .catch(function () {
-          mostrarEstado('No se guardó tu respuesta. Revisa tu conexión e inténtalo otra vez.', true);
-        })
-        .finally(function () { bloquear(false); });
-    });
-  });
 })();

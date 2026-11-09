@@ -378,3 +378,100 @@ textarea, input {
   user-select: text;
 }
 ::selection { background: rgba(255, 79, 184, 0.3); color: inherit; }
+
+/* ---------- Más neón ---------- */
+.subtitulo {
+  color: #bfe4ff;
+  text-shadow: 0 0 3px rgba(76, 179, 255, 0.9), 0 0 14px rgba(76, 179, 255, 0.55);
+}
+
+.etiqueta { text-shadow: 0 0 10px color-mix(in srgb, currentColor 55%, transparent); }
+
+/* Tubo de neón corto arriba de cada sección, un color distinto en cada una */
+.pagina > .seccion:not(.rsvp) { --tubo: var(--naranja); }
+.pagina > .seccion:nth-of-type(2) { --tubo: var(--azul); }
+.pagina > .seccion:nth-of-type(3) { --tubo: var(--rosa); }
+.pagina > .seccion:nth-of-type(4) { --tubo: var(--verde); }
+.pagina > .seccion:not(.rsvp):not(.estado)::before {
+  content: "";
+  width: 3rem;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--tubo);
+  box-shadow: 0 0 6px var(--tubo), 0 0 16px color-mix(in srgb, var(--tubo) 60%, transparent);
+}
+.pagina > .seccion:not(.rsvp) .etiqueta { color: var(--tubo); }
+
+.mapa {
+  border-color: var(--azul);
+  box-shadow: 0 0 6px rgba(76, 179, 255, 0.6), 0 0 22px rgba(76, 179, 255, 0.25);
+}
+
+.boton-secundario { box-shadow: 0 0 10px rgba(76, 179, 255, 0.35); }
+
+.plan li { border-color: var(--c); box-shadow: 0 0 8px color-mix(in srgb, var(--c) 45%, transparent), inset 0 0 6px color-mix(in srgb, var(--c) 25%, transparent); }
+.plan li:nth-child(1) { --c: var(--naranja); }
+.plan li:nth-child(2) { --c: var(--verde); }
+.plan li:nth-child(3) { --c: var(--rosa); }
+.plan li:nth-child(4) { --c: var(--azul); }
+
+.rsvp { box-shadow: 0 0 8px rgba(255, 138, 61, 0.55), 0 0 36px rgba(255, 138, 61, 0.2), inset 0 0 14px rgba(255, 138, 61, 0.15); }
+.boton { box-shadow: 0 0 10px color-mix(in srgb, var(--c, var(--verde)) 30%, transparent); }
+
+/* ---------- Aún más neón ---------- */
+/* Títulos de sección como letreros: casi blancos con halo del color de su tubo */
+.pagina > .seccion:not(.rsvp) h2 {
+  color: color-mix(in srgb, var(--tubo) 25%, #fff);
+  text-shadow: 0 0 2px color-mix(in srgb, var(--tubo) 80%, transparent), 0 0 12px color-mix(in srgb, var(--tubo) 50%, transparent);
+}
+.rsvp h2 {
+  color: #ffe6d4;
+  text-shadow: 0 0 2px rgba(255, 138, 61, 0.8), 0 0 12px rgba(255, 138, 61, 0.5);
+}
+
+.fecha .dia {
+  color: #c9ffe6;
+  text-shadow: 0 0 3px var(--verde), 0 0 14px var(--verde), 0 0 34px rgba(62, 230, 160, 0.4);
+}
+.fecha .linea2 strong { color: #ffe6d4; text-shadow: 0 0 10px rgba(255, 138, 61, 0.7); }
+
+/* Rejilla del piso en rosa y azul, un poco más viva */
+.marquesina::after {
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 79, 184, 0.35) 0 1px, transparent 1px 2.5rem),
+    repeating-linear-gradient(0deg, rgba(76, 179, 255, 0.35) 0 1px, transparent 1px 1.25rem);
+}
+
+/* Aro de luz alrededor de cada color del dress code */
+.colores span { outline: 2px solid color-mix(in srgb, var(--c) 70%, #fff); outline-offset: 3px; }
+.colores li:last-child span { outline-color: #fff; box-shadow: 0 0 12px rgba(255, 255, 255, 0.35); }
+
+textarea:focus { outline: none; border-color: var(--naranja); box-shadow: 0 0 10px rgba(255, 138, 61, 0.5); }
+
+.pie {
+  font: 400 1.1rem/1.4 var(--f-titulo);
+  color: #ffd6ef;
+  text-shadow: 0 0 3px var(--rosa), 0 0 14px rgba(255, 79, 184, 0.6);
+}
+
+/* Saludo y despedida más visibles */
+.saludo {
+  font: 400 clamp(1rem, 4.6vw, 1.3rem)/1.3 var(--f-titulo);
+  letter-spacing: 0.04em;
+  color: #fff1e6;
+  text-shadow: 0 0 2px rgba(255, 138, 61, 0.9), 0 0 12px rgba(255, 138, 61, 0.6), 0 0 28px rgba(255, 138, 61, 0.3);
+  text-wrap: balance;
+}
+
+.pie {
+  font: 400 clamp(1.4rem, 6.5vw, 2rem)/1.2 var(--f-titulo);
+  letter-spacing: 0.04em;
+  color: #ffd6ef;
+  text-shadow: 0 0 4px rgba(255, 79, 184, 0.95), 0 0 16px rgba(255, 79, 184, 0.6), 0 0 36px rgba(255, 79, 184, 0.3);
+}
+
+/* Parejas: cuatro opciones en rejilla de 2x2, también en celular */
+@media (max-width: 400px) {
+  .acciones.varias { grid-template-columns: 1fr 1fr; }
+}
+.acciones.varias .boton { min-height: 3.75rem; font-size: 0.95rem; }
