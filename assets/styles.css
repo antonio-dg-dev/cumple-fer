@@ -559,3 +559,4 @@ textarea:focus { outline: none; border-color: var(--naranja); box-shadow: 0 0 10
 @media (prefers-reduced-motion: reduce) {
   .nombre, .cartel, .pie, .rsvp, .fecha .dia, .fecha .linea1, #t-donde, #t-vestimenta, #t-plan { animation: none; }
 }
+.lista .aparte { font-weight: 400; font-size: 0.85rem; color: var(--tenue); }

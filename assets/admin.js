@@ -15,29 +15,72 @@
     try { sessionStorage.setItem('cumple-admin', k); } catch (e) { /* sin almacenamiento, no pasa nada */ }
   }
 
-  function llenar(id, invitados) {
+  const ESTADO = { si: 'sí va', no: 'no va', pend: 'no ha respondido' };
+
+  function grupoDe(respuesta) {
+    return respuesta === 'si' || respuesta === 'no' ? respuesta : 'pend';
+  }
+
+  // Une en un renglón a quienes comparten invitación y quedaron en la misma lista;
+  // si la pareja se separó, cada renglón dice qué respondió el otro
+  function renglones(invitados, g) {
+    const porNombre = {};
+    invitados.forEach(function (inv) { porNombre[inv.nombre] = inv; });
+    const usados = {};
+    const filas = [];
+    invitados.forEach(function (inv) {
+      if (grupoDe(inv.respuesta) !== g || usados[inv.nombre]) return;
+      const juntos = [inv].concat((inv.con || []).map(function (n) { return porNombre[n]; }).filter(function (o) {
+        return o && grupoDe(o.respuesta) === g;
+      }));
+      juntos.forEach(function (o) { usados[o.nombre] = true; });
+      const fuera = (inv.con || []).map(function (n) { return porNombre[n]; }).filter(function (o) {
+        return o && grupoDe(o.respuesta) !== g;
+      });
+      const fechas = juntos.map(function (o) { return o.actualizado; }).filter(Boolean).sort();
+      filas.push({
+        nombres: juntos.map(function (o) { return o.nombre; }),
+        aparte: fuera.map(function (o) { return o.nombre + ' ' + ESTADO[grupoDe(o.respuesta)]; }).join(' · '),
+        notas: juntos.map(function (o) { return o.notas; }).filter(Boolean)[0] || '',
+        actualizado: fechas[fechas.length - 1] || null
+      });
+    });
+    return filas;
+  }
+
+  function unirNombres(nombres) {
+    return nombres.length < 2 ? nombres.join('') : nombres.slice(0, -1).join(', ') + ' y ' + nombres[nombres.length - 1];
+  }
+
+  function llenar(id, filas) {
     const ul = document.getElementById(id);
     ul.replaceChildren();
-    if (!invitados.length) {
+    if (!filas.length) {
       const li = document.createElement('li');
       li.className = 'vacio';
       li.textContent = 'Nadie todavía';
       ul.append(li);
       return;
     }
-    invitados.forEach(function (inv) {
+    filas.forEach(function (fila) {
       const li = document.createElement('li');
       const quien = document.createElement('span');
       quien.className = 'quien';
-      quien.textContent = inv.nombre + (inv.con && inv.con.length ? ' (con ' + inv.con.join(', ') + ')' : '');
+      quien.textContent = unirNombres(fila.nombres);
+      if (fila.aparte) {
+        const aparte = document.createElement('span');
+        aparte.className = 'aparte';
+        aparte.textContent = ' · ' + fila.aparte;
+        quien.append(aparte);
+      }
       const cuando = document.createElement('span');
       cuando.className = 'cuando';
-      cuando.textContent = inv.actualizado ? fecha.format(new Date(inv.actualizado)) : '';
+      cuando.textContent = fila.actualizado ? fecha.format(new Date(fila.actualizado)) : '';
       li.append(quien, cuando);
-      if (inv.notas) {
+      if (fila.notas) {
         const nota = document.createElement('span');
         nota.className = 'nota';
-        nota.textContent = inv.notas;
+        nota.textContent = fila.notas;
         li.append(nota);
       }
       ul.append(li);
@@ -62,13 +105,11 @@
           return;
         }
         recordar(k);
-        const grupos = { si: [], no: [], pend: [] };
-        data.invitados.forEach(function (inv) {
-          (grupos[inv.respuesta] || grupos.pend).push(inv);
-        });
         ['si', 'no', 'pend'].forEach(function (g) {
-          document.getElementById('n-' + g).textContent = grupos[g].length;
-          llenar('l-' + g, grupos[g]);
+          // Los contadores son por persona, aunque la pareja salga en un solo renglón
+          const personas = data.invitados.filter(function (inv) { return grupoDe(inv.respuesta) === g; });
+          document.getElementById('n-' + g).textContent = personas.length;
+          llenar('l-' + g, renglones(data.invitados, g));
         });
         estado.textContent = 'Actualizado ' + fecha.format(new Date());
         panel.hidden = false;
