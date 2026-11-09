@@ -22,12 +22,15 @@
 
 * { box-sizing: border-box; }
 
-html { background: var(--noche); }
+html { background: var(--noche); overflow-x: clip; }
 
 body {
   margin: 0;
   min-height: 100vh;
   overflow-x: clip;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
   background:
     radial-gradient(120% 60% at 50% 0%, #2a1840 0%, transparent 60%),
     var(--noche);
@@ -60,7 +63,7 @@ body {
 .marquesina::after {
   content: "";
   position: absolute;
-  inset: auto -20% 0;
+  inset: auto 0 0;
   height: 5rem;
   background:
     repeating-linear-gradient(90deg, rgba(76, 179, 255, 0.18) 0 1px, transparent 1px 2.5rem),
@@ -368,3 +371,10 @@ textarea {
   font: inherit;
 }
 .login .boton { flex: 0 0 auto; }
+
+/* Textos no seleccionables; los campos de texto sí */
+textarea, input {
+  -webkit-user-select: text;
+  user-select: text;
+}
+::selection { background: rgba(255, 79, 184, 0.3); color: inherit; }

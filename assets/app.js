@@ -14,10 +14,7 @@
     no: 'Gracias por avisar. Te vamos a extrañar.'
   };
 
-  if (!token || !url) {
-    sinLink.hidden = false;
-    return;
-  }
+  if (!token || !url) return;
 
   function mostrarEstado(texto, esError) {
     estado.textContent = texto;
