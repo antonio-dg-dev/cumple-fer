@@ -507,7 +507,7 @@ textarea:focus { outline: none; border-color: var(--naranja); box-shadow: 0 0 10
   89% { opacity: 0.75; }
   94% { opacity: 1; }
 }
-.nombre { animation: encender 1.6s ease-out 0.2s both, parpadeo 5.3s ease-in-out 1.9s infinite; }
+.nombre { animation: encender 1.6s ease-out 0.2s both, parpadeo 5.3s ease-in-out 2.2s infinite; }
 .cartel { animation: parpadeo-arco 7.9s ease-in-out 3.1s infinite; }
 @keyframes parpadeo-arco {
   0%, 100% { border-color: var(--rosa); box-shadow: 0 0 8px rgba(255, 79, 184, 0.8), 0 0 28px rgba(255, 79, 184, 0.35), inset 0 0 18px rgba(255, 79, 184, 0.35); }
@@ -544,7 +544,7 @@ textarea:focus { outline: none; border-color: var(--naranja); box-shadow: 0 0 10
 }
 .fecha .dia { animation: parpadeo-doble 8.3s linear 2.7s infinite; }
 .fecha .linea1 { animation: parpadeo-leve 10.9s ease-in-out 5.9s infinite; }
-#t-donde { animation: parpadeo-leve 9.1s ease-in-out 1.3s infinite; }
+#t-donde { animation: parpadeo-leve 9.1s ease-in-out 2.3s infinite; }
 #t-vestimenta { animation: parpadeo-doble 12.7s linear 7.4s infinite; }
 #t-plan { animation: parpadeo-leve 7.7s ease-in-out 4.6s infinite; }
 .pie { animation: parpadeo-doble 11.3s linear 6.1s infinite; }
