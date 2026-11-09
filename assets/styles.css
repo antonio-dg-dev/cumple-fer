@@ -80,6 +80,40 @@ body {
   color: var(--tenue);
 }
 
+/* Retrato en arco de teatro con borde de neón rosa; el nombre se monta encima */
+.cartel {
+  position: relative;
+  margin: 0.5rem auto 0;
+  width: min(17rem, 78%);
+  aspect-ratio: 3 / 4;
+  border: 3px solid var(--rosa);
+  border-radius: 999px 999px 10px 10px;
+  overflow: hidden;
+  box-shadow:
+    0 0 8px rgba(255, 79, 184, 0.8),
+    0 0 28px rgba(255, 79, 184, 0.35),
+    inset 0 0 18px rgba(255, 79, 184, 0.35);
+}
+.cartel img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+}
+.cartel::after {
+  content: "";
+  position: absolute;
+  inset: 55% 0 0;
+  background: linear-gradient(to bottom, transparent, var(--noche) 92%);
+}
+
+.cartel + .nombre {
+  position: relative;
+  margin-top: -3.2rem;
+}
+
 .nombre {
   margin: 0;
   font: 400 clamp(4.5rem, 24vw, 8rem)/0.95 var(--f-neon);
