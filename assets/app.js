@@ -11,6 +11,9 @@
   const estado = document.getElementById('estado');
   const acciones = document.getElementById('acciones');
 
+  // La fecha límite deja de mostrarse desde el martes 10 a las 00:00, hora CDMX
+  if (Date.now() >= Date.parse('2026-11-10T00:00:00-06:00')) document.getElementById('limite').hidden = true;
+
   // Crece desde cero empujando el contenido mientras aparece
   function mostrarSaludo() {
     const raiz = document.documentElement;
