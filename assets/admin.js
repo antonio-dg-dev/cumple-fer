@@ -45,7 +45,10 @@
         actualizado: fechas[fechas.length - 1] || null
       });
     });
-    return filas;
+    // Lo más reciente hasta arriba; sin fecha se queda al final en el orden de la hoja
+    return filas.sort(function (a, b) {
+      return (b.actualizado || '').localeCompare(a.actualizado || '');
+    });
   }
 
   function unirNombres(nombres) {
